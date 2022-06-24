@@ -1,3 +1,4 @@
+import Rating from "./Ratings";
 const Product = ({ product }) => {
   return (
     <div className="card border border-dark" id="boom">
@@ -10,7 +11,7 @@ const Product = ({ product }) => {
           {product.name}
         </a>
         <div>
-          {product.rating} from {product.numReviews} reviews
+          <Rating value={product.rating} text={`${product.numReviews} reviews`} />
         </div>
         <p className="card-text">{product.price} ብር</p>
       </div>
