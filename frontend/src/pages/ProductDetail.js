@@ -44,7 +44,12 @@ const ProductDetail = () => {
               <div>{product.countInStock > 0 ? "In Stock" : "Out of Stock"}</div>
             </div>
             <hr />
-            <button className="btn btn-secondary bg-dark text-light">Add to cart</button>
+            <button
+              className="btn btn-secondary bg-dark text-light"
+              disabled={product.countInStock === 0}
+            >
+              Add to cart
+            </button>
           </div>
         </div>
       </div>
