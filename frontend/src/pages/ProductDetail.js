@@ -29,7 +29,7 @@ const ProductDetail = () => {
           </div>
 
           <div style={{ height: "min-content" }} className="my-3 ms-auto col-md-5 border ">
-            <div class="d-flex flex-row justify-content-between my-3">
+            <div className="d-flex flex-row justify-content-between my-3">
               <div>
                 <span className="fw-bold">Price: </span>
               </div>
@@ -37,7 +37,7 @@ const ProductDetail = () => {
               <div>{product.price} ብር</div>
             </div>
             <hr />
-            <div class="d-flex flex-row justify-content-between my-3">
+            <div className="d-flex flex-row justify-content-between my-3">
               <div>
                 <span className="fw-bold ">Status: </span>
               </div>
