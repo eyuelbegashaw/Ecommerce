@@ -2,11 +2,14 @@ import mongoose from "mongoose";
 
 const orderSchema = mongoose.Schema(
   {
+    //User buying items
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "User",
     },
+
+    //Shopping Cart items
     orderItems: [
       {
         name: { type: String, required: true },
@@ -20,12 +23,16 @@ const orderSchema = mongoose.Schema(
         },
       },
     ],
+
+    //Shipping Address
     shippingAddress: {
       address: { type: String, required: true },
       city: { type: String, required: true },
       postalCode: { type: String, required: true },
       country: { type: String, required: true },
     },
+
+    //payment method and payment result
     paymentMethod: {
       type: String,
       required: true,
@@ -36,6 +43,8 @@ const orderSchema = mongoose.Schema(
       update_time: { type: String },
       email_address: { type: String },
     },
+
+    //tax , shipping and total prices
     taxPrice: {
       type: Number,
       required: true,
@@ -51,18 +60,21 @@ const orderSchema = mongoose.Schema(
       required: true,
       default: 0.0,
     },
+
+    //ispaid and isdelivered booleans
+    isDelivered: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
     isPaid: {
       type: Boolean,
       required: true,
       default: false,
     },
+    //paidAt and deliveredAt date
     paidAt: {
       type: Date,
-    },
-    isDelivered: {
-      type: Boolean,
-      required: true,
-      default: false,
     },
     deliveredAt: {
       type: Date,
