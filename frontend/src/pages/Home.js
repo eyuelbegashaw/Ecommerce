@@ -1,25 +1,36 @@
-import { useEffect, useState } from "react";
+import {useEffect} from "react";
+
+import {useSelector, useDispatch} from "react-redux";
+import {getProducts} from "../features/products/productSlice";
+
+//components
 import Product from "../components/Product";
-import axios from "axios";
-//import products from "../products";
+import Spinner from "../components/Spinner";
 
 const Home = () => {
-  const [products, setProducts] = useState([]);
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const { data } = await axios.get("/api/products");
-      setProducts(data);
-    };
+  const dispatch = useDispatch();
 
-    fetchProducts();
-  }, []);
+  const {products, isLoading, getAllError} = useSelector(store => store.product);
+  const {error, message} = getAllError;
+
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
   return (
-    <div className="container">
-      <h3 className="my-3">LATEST PRODUCTS</h3>
-      <div className="container" id="products">
-        {products && products.map((product) => <Product key={product._id} product={product} />)}
-      </div>
-    </div>
+    <>
+      {isLoading && <Spinner />}
+      {error && !isLoading && <h1 className="text-center mt-4">{message}</h1>}
+      {products.length > 0 && (
+        <div className="container">
+          <h3 className="mb-2">LATEST PRODUCTS</h3>
+          <div className="container" id="products">
+            {products.map(product => (
+              <Product key={product._id} product={product} />
+            ))}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
