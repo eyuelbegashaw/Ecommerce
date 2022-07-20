@@ -7,6 +7,7 @@ import {getProduct} from "../features/products/productSlice";
 //components
 import Rating from "../components/Ratings";
 import Spinner from "../components/Spinner";
+import Alert from "../components/Alert";
 
 const ProductDetail = () => {
   const {productId} = useParams();
@@ -20,8 +21,7 @@ const ProductDetail = () => {
 
   return (
     <>
-      {isLoading && <Spinner />}
-      {error && !isLoading && <h1 className="text-center mt-4">{message}</h1>}
+      <div>{error && <Alert type={"danger"} text={message} />}</div>
       {Object.keys(product).length !== 0 && (
         <div className="container m-auto row mt-2">
           <div className="col-lg-6">
@@ -70,6 +70,7 @@ const ProductDetail = () => {
           </div>
         </div>
       )}
+      {isLoading && <Spinner />}
     </>
   );
 };

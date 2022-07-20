@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
 import {useSelector, useDispatch} from "react-redux";
 import {getProducts} from "../features/products/productSlice";
@@ -6,20 +6,31 @@ import {getProducts} from "../features/products/productSlice";
 //components
 import Product from "../components/Product";
 import Spinner from "../components/Spinner";
+import Alert from "../components/Alert";
 
 const Home = () => {
   const dispatch = useDispatch();
 
   const {products, isLoading, getAllError} = useSelector(store => store.product);
   const {error, message} = getAllError;
+  const {alert, setAlert} = useState({show: false, type: "", text: ""});
 
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
+
+  //handle alert
+  const handleAlert = ({type, text}) => {
+    setAlert({show: true, type, text});
+    setTimeout(() => {
+      setAlert({show: false});
+    }, 6000);
+  };
+
   return (
     <>
-      {isLoading && <Spinner />}
-      {error && !isLoading && <h1 className="text-center mt-4">{message}</h1>}
+      <div>{error && <Alert type={"danger"} text={message} />}</div>
+
       {products.length > 0 && (
         <div className="container">
           <h3 className="mb-2">LATEST PRODUCTS</h3>
@@ -30,6 +41,7 @@ const Home = () => {
           </div>
         </div>
       )}
+      {isLoading && <Spinner />}
     </>
   );
 };
