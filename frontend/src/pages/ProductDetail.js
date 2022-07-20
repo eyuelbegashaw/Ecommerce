@@ -1,8 +1,8 @@
-import {useEffect} from "react";
-import {useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useNavigate, useParams} from "react-router-dom";
 
 import {useSelector, useDispatch} from "react-redux";
-import {getProduct} from "../features/products/productSlice";
+import {getProduct, setProduct} from "../features/products/productSlice";
 
 //components
 import Rating from "../components/Ratings";
@@ -10,14 +10,24 @@ import Spinner from "../components/Spinner";
 import Alert from "../components/Alert";
 
 const ProductDetail = () => {
-  const {productId} = useParams();
-  const {product, isLoading, getOneError} = useSelector(store => store.product);
-  const {error, message} = getOneError;
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const {productId} = useParams();
+  const [quantity, setQuantity] = useState(0);
+  const {products, product, isLoading, getOneError} = useSelector(store => store.product);
+  const {error, message} = getOneError;
 
   useEffect(() => {
-    dispatch(getProduct(productId));
-  }, [dispatch]);
+    if (products.length > 0) {
+      dispatch(setProduct(products.find(p => p._id === productId)));
+    } else {
+      dispatch(getProduct(productId));
+    }
+  }, [dispatch, products, productId]);
+
+  const addToCartHandler = () => {
+    navigate(`/cart/${product._id}?qty=${quantity}`);
+  };
 
   return (
     <>
@@ -58,10 +68,30 @@ const ProductDetail = () => {
                   </div>
                   <div>{product.countInStock > 0 ? "In Stock" : "Out of Stock"}</div>
                 </div>
+
+                {product.countInStock > 0 && (
+                  <div className="d-flex flex-row justify-content-between my-3">
+                    <span className="fw-bold ">Quantity: </span>
+                    <select
+                      value={quantity}
+                      style={{width: 70}}
+                      onChange={e => setQuantity(e.target.value)}
+                    >
+                      {[...Array(product.countInStock).keys()].map(value => (
+                        <option value={value + 1} key={value + 1}>
+                          {value + 1}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
                 <hr />
+
                 <button
                   className="btn btn-secondary bg-dark text-light"
                   disabled={product.countInStock === 0}
+                  onClick={addToCartHandler}
                 >
                   Add to cart
                 </button>

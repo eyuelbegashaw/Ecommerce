@@ -16,8 +16,8 @@ const Home = () => {
   const {alert, setAlert} = useState({show: false, type: "", text: ""});
 
   useEffect(() => {
-    dispatch(getProducts());
-  }, [dispatch]);
+    if (!(products.length > 0)) dispatch(getProducts());
+  }, [dispatch, products]);
 
   //handle alert
   const handleAlert = ({type, text}) => {
