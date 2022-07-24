@@ -1,4 +1,4 @@
-import { Outlet, Link } from "react-router-dom";
+import {Outlet, Link} from "react-router-dom";
 import Footer from "./Footer";
 const Header = () => {
   return (
@@ -23,7 +23,7 @@ const Header = () => {
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li className="nav-item px-2">
-                  <Link className="nav-link active" to="/">
+                  <Link className="nav-link active" to="/cart">
                     <i className="fas fa-shopping-cart"></i> Cart
                   </Link>
                 </li>

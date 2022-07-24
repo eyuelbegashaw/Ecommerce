@@ -8,3 +8,8 @@
 main {
   min-height: 80vh;
 }
+
+.subtotal {
+  height: min-content;
+  width: 300px;
+}
