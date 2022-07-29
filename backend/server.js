@@ -1,22 +1,29 @@
 //Modules
-import express from "express";
+import express, {urlencoded} from "express";
 import dotenv from "dotenv";
 
 //Database
 import connectDB from "./config/db.js";
 
 //Routes
-import productRouter from "./routes/productRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 //middlewares
-import { NotFound, ErrorMiddleware } from "./middlewares/errorMiddleware.js";
+import {NotFound, ErrorMiddleware} from "./middlewares/errorMiddleware.js";
 
 dotenv.config();
 connectDB();
 
 const app = express();
+app.use(express.json());
+app.use("/api/products", productRoutes);
+app.use("/api/user", userRoutes);
 
-app.use("/api/products", productRouter);
+import protect from "./middlewares/authMiddleware.js";
+app.get("/protected", protect, (req, res) => {
+  res.send("successfully in");
+});
 
 app.use(NotFound);
 app.use(ErrorMiddleware);

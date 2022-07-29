@@ -1,12 +1,12 @@
 import axios from "axios";
 
-//get all product
+//GET - fetch all product
 const getProducts = async () => {
   const response = await axios.get("/api/products");
   return response.data;
 };
 
-//get one product
+//GET - fetch one product
 const getProduct = async id => {
   const response = await axios.get(`/api/products/${id}`);
   return response.data;

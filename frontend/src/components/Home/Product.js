@@ -1,7 +1,7 @@
-import Rating from "./Ratings";
-import { Link } from "react-router-dom";
+import Rating from "../Globals/Ratings";
+import {Link} from "react-router-dom";
 
-const Product = ({ product }) => {
+const Product = ({product}) => {
   return (
     <div className="card border border-dark" id="boom">
       <Link to={`/product/${product._id}`}>

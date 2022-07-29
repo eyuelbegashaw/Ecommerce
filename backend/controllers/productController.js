@@ -5,7 +5,7 @@ const getProducts = async (req, res, next) => {
   try {
     const products = await Product.find({});
     if (products) res.json(products);
-    else res.status(404).json({message: " No product found "});
+    else res.status(404).json({message: "No product found"});
   } catch (error) {
     next(error);
   }
@@ -19,7 +19,7 @@ const getProduct = async (req, res, next) => {
 
     const product = await Product.findById(req.params.id);
     if (product) res.json(product);
-    else res.status(404).json({message: " Product Not Found "});
+    else res.status(404).json({message: "Product Not Found"});
   } catch (error) {
     next(error);
   }

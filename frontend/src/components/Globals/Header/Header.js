@@ -1,6 +1,13 @@
+import {useSelector} from "react-redux";
 import {Outlet, Link} from "react-router-dom";
-import Footer from "./Footer";
+
+//components
+import Footer from "../Footer";
+import SignIn from "./SignIn";
+import SignOut from "./SignOut";
+
 const Header = () => {
+  const {user} = useSelector(store => store.auth);
   return (
     <>
       <header>
@@ -9,6 +16,7 @@ const Header = () => {
             <Link className="navbar-brand" to="/">
               EthioShop
             </Link>
+
             <button
               className="navbar-toggler"
               type="button"
@@ -27,11 +35,7 @@ const Header = () => {
                     <i className="fas fa-shopping-cart"></i> Cart
                   </Link>
                 </li>
-                <li className="nav-item px-2">
-                  <Link className="nav-link" to="/">
-                    <i className="fas fa-user"></i> Sign in
-                  </Link>
-                </li>
+                {user ? <SignOut /> : <SignIn />}
               </ul>
             </div>
           </div>

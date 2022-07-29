@@ -1,36 +1,31 @@
-import {useEffect, useState} from "react";
-
+import {useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
-import {getProducts} from "../features/products/productSlice";
+import {getProducts, reset} from "../features/products/productSlice";
 
 //components
-import Product from "../components/Product";
-import Spinner from "../components/Spinner";
-import Alert from "../components/Alert";
+import Product from "../components/Home/Product";
+import Spinner from "../components/Globals/Spinner";
+import Alert from "../components/Globals/Alert";
 
 const Home = () => {
   const dispatch = useDispatch();
 
-  const {products, isLoading, getAllError} = useSelector(store => store.product);
-  const {error, message} = getAllError;
-  const {alert, setAlert} = useState({show: false, type: "", text: ""});
+  const {products, isLoading, isError, message} = useSelector(store => store.product);
 
+  //fetch on mount
   useEffect(() => {
-    if (!(products.length > 0)) dispatch(getProducts());
-  }, [dispatch, products]);
+    dispatch(getProducts());
+  }, [dispatch]);
 
-  //handle alert
-  const handleAlert = ({type, text}) => {
-    setAlert({show: true, type, text});
-    setTimeout(() => {
-      setAlert({show: false});
-    }, 6000);
-  };
-
+  //reset on unmount
+  useEffect(() => {
+    return () => {
+      dispatch(reset());
+    };
+  }, [dispatch]);
   return (
     <>
-      <div>{error && <Alert type={"danger"} text={message} />}</div>
-
+      <div>{isError && <Alert type={"danger"} text={message} />}</div>
       {products.length > 0 && (
         <div className="container">
           <h3 className="mb-2">LATEST PRODUCTS</h3>
