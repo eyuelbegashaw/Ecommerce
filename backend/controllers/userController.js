@@ -15,7 +15,7 @@ const loginUser = async (req, res, next) => {
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
-        token: generateToken(user.name),
+        token: generateToken(user._id, user.name, user.email, user.isAdmin),
       });
     } else {
       res.status(400);
@@ -59,6 +59,7 @@ const registerUser = async (req, res, next) => {
         _id: user.id,
         name: user.name,
         email: user.email,
+        isAdmin: user.isAdmin,
         token: generateToken(user._id),
       });
     } else {
@@ -70,4 +71,45 @@ const registerUser = async (req, res, next) => {
   }
 };
 
-export {loginUser, registerUser};
+const getUser = async (req, res, next) => {
+  try {
+    if (req.user) {
+      res.json(req.user);
+    } else {
+      res.status(404);
+      throw new Error("User Not Found");
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateUser = async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+  try {
+    if (user) {
+      user.name = req.body.name || user.name;
+      user.email = req.body.email || user.email;
+      if (req.body.password) {
+        user.password = req.body.password;
+      }
+
+      const updatedUser = await user.save();
+
+      res.json({
+        id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin,
+        token: generateToken(updatedUser._id),
+      });
+    } else {
+      res.status(404);
+      throw new Error("User Not Found");
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+export {loginUser, registerUser, getUser, updateUser};

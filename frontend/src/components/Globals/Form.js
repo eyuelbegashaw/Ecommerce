@@ -1,7 +1,7 @@
 const Form = ({formData, onChange, onSubmit, type}) => {
   return (
     <form onSubmit={onSubmit}>
-      {type === "Register" && (
+      {(type === "Register" || type === "Update") && (
         <div className="form-group  mb-2">
           <label htmlFor="name" className="form-label fw-bold">
             Name
@@ -45,7 +45,7 @@ const Form = ({formData, onChange, onSubmit, type}) => {
           onChange={onChange}
         />
       </div>
-      {type === "Register" && (
+      {(type === "Register" || type === "Update") && (
         <div className="form-group">
           <label htmlFor="password2" className="form-label fw-bold">
             Confirm Password
@@ -63,7 +63,9 @@ const Form = ({formData, onChange, onSubmit, type}) => {
       )}
       <div className="form-group mt-2">
         <button type="submit" className="btn btn-secondary">
-          {type === "Register" ? "Register" : "Login"}
+          {type === "Update" && "Update"}
+          {type === "Register" && "Register"}
+          {type === "Login" && "Login"}
         </button>
       </div>
     </form>

@@ -18,6 +18,20 @@ const register = async userData => {
   return data;
 };
 
+//POST - register
+const updateUser = async (updatedUser, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const {data} = await axios.put("/api/user/profile", updatedUser, config);
+  if (data) {
+    localStorage.setItem("user", JSON.stringify(data));
+  }
+  return data;
+};
+
 //logout
 const logout = async () => {
   localStorage.removeItem("user");
@@ -26,6 +40,7 @@ const logout = async () => {
 const authService = {
   login,
   register,
+  updateUser,
   logout,
 };
 

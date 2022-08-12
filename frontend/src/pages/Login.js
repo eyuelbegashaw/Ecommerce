@@ -39,7 +39,7 @@ const Login = () => {
     if (isError) {
       setAlert({type: "danger", text: message});
     }
-    if (isSuccess || user) {
+    if (isSuccess) {
       navigate(redirect);
     }
 
