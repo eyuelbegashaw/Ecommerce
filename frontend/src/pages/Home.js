@@ -1,8 +1,10 @@
 import {useEffect} from "react";
+
+//Redux
 import {useSelector, useDispatch} from "react-redux";
 import {getProducts, reset} from "../features/products/productSlice";
 
-//components
+//Components
 import Product from "../components/Home/Product";
 import Spinner from "../components/Globals/Spinner";
 import Alert from "../components/Globals/Alert";

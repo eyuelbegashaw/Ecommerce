@@ -1,21 +1,23 @@
 import {useState, useEffect} from "react";
-import {useSelector, useDispatch} from "react-redux";
 import {useNavigate, useLocation} from "react-router-dom";
+
+//Redux
+import {useSelector, useDispatch} from "react-redux";
 import {updateUser, reset} from "../features/auth/authSlice";
 
 import Alert from "../components/Globals/Alert";
 import Form from "../components/Globals/Form";
 
-function UpdateUser() {
-  //initializations
+function Profile() {
+  //Declarations
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation;
 
-  //global states
+  //Global states
   const {user, isSuccess, isError, message} = useSelector(store => store.auth);
 
-  //components states
+  //Component states
   const [formData, setFormData] = useState({
     name: user ? user.name : "",
     email: user ? user.email : "",
@@ -29,7 +31,7 @@ function UpdateUser() {
 
   useEffect(() => {
     if (!user) {
-      navigate("/");
+      navigate("/login");
     }
     if (isError) {
       setAlert({type: "danger", text: message});
@@ -79,4 +81,4 @@ function UpdateUser() {
   );
 }
 
-export default UpdateUser;
+export default Profile;

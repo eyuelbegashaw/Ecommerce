@@ -10,9 +10,9 @@ const Header = () => {
   const {user} = useSelector(store => store.auth);
   return (
     <>
-      <header>
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-          <div className="container">
+      <header className="w-100">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark w-100">
+          <div className="container-sm w-100">
             <Link className="navbar-brand" to="/">
               EthioShop
             </Link>

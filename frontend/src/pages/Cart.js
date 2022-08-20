@@ -1,26 +1,32 @@
 import {useEffect, useState} from "react";
 import {useParams, useLocation, useNavigate} from "react-router-dom";
+
+//Redux
 import {useSelector, useDispatch} from "react-redux";
 import {addToCartAsync, removeFromCart} from "../features/cart/cartSlice";
 
+//Components
 import Alert from "../components/Globals/Alert";
 import CartItem from "../components/Cart/CartItem";
 
 const Cart = () => {
-  //initializations
+  //Declarations
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const {productId} = useParams();
 
-  const [alert, setAlert] = useState({type: "", text: ""});
+  //Global states
+  const {user} = useSelector(store => store.auth);
+  const {cartItems} = useSelector(store => store.cart);
 
-  const {cart} = useSelector(store => store.cart);
+  //Component states
+  const [alert, setAlert] = useState({type: "", text: ""});
 
   const quantity = Number(location.search.split("=")[1]);
 
   useEffect(() => {
-    if (productId) {
+    if (productId && quantity) {
       dispatch(addToCartAsync({productId, quantity}));
     }
   }, [dispatch, productId, quantity]);
@@ -31,20 +37,26 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
-    navigate("/login/?redirect=shipping");
+    if (user) navigate("/shipping");
+    else navigate("/login/?redirect=shipping");
   };
 
   const handleDelete = productId => {
     dispatch(removeFromCart(productId));
   };
 
+  const subTotal = cartItems.reduce((total, current) => (total += current.quantity), 0);
+  const totalItems = cartItems
+    .reduce((total, current) => total + current.price * current.quantity, 0)
+    .toFixed(2);
+
   return (
     <div className="container-md">
-      <h4 className="mt-2 mb-4 text-center">SHOPPING CART</h4>
+      <h4 className="my-2 text-center">SHOPPING CART</h4>
       <div>
         {alert.text !== "" && <Alert type={alert.type} text={alert.text} setAlert={setAlert} />}
       </div>
-      {cart.length === 0 && (
+      {cartItems.length === 0 && (
         <>
           <div className="text-center h1 mt-5">
             <i className="fa-solid fa-cart-shopping "></i>
@@ -52,10 +64,10 @@ const Cart = () => {
           <p className="text-center fs-3">Your cart is currently empty</p>
         </>
       )}
-      {cart.length > 0 && (
-        <div className="mx-auto row">
-          <div className="col-lg-8">
-            <table className="table table-responsive">
+      {cartItems.length > 0 && (
+        <div className="row p-0">
+          <div className="col-lg-8 p-0">
+            <table className="table table-responsive p-0">
               <thead>
                 <tr>
                   <th> Image</th>
@@ -66,7 +78,7 @@ const Cart = () => {
                 </tr>
               </thead>
               <tbody>
-                {cart.map(item => (
+                {cartItems.map(item => (
                   <CartItem
                     key={item.product}
                     item={item}
@@ -79,16 +91,12 @@ const Cart = () => {
           </div>
           <div className="border p-3 ms-lg-auto subtotal col-sm-4">
             <p className="fs-5">
-              SUB TOTAL ({cart.reduce((total, current) => (total += current.quantity), 0)}) ITEMS{" "}
-              <br />
-              {cart
-                .reduce((total, current) => total + current.price * current.quantity, 0)
-                .toFixed(2)}{" "}
-              ብር
+              SUB TOTAL {subTotal}
+              ITEMS <br /> {totalItems} ብር
             </p>
 
             <button
-              disabled={cart.length === 0}
+              disabled={cartItems.length === 0}
               className="border text-white bg-dark px-4 py-2"
               onClick={handleCheckout}
             >

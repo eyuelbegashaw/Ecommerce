@@ -1,6 +1,7 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import productService from "./productService";
 import {errorMessage} from "../../util/error";
+
+import productService from "./productService";
 
 const initialState = {
   products: [],

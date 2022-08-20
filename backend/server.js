@@ -8,6 +8,7 @@ import connectDB from "./config/db.js";
 //Routes
 import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 
 //middlewares
 import {NotFound, ErrorMiddleware} from "./middlewares/errorMiddleware.js";
@@ -17,13 +18,13 @@ connectDB();
 
 const app = express();
 app.use(express.json());
+
 app.use("/api/products", productRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/orders", orderRoutes);
 
-import protect from "./middlewares/authMiddleware.js";
-app.get("/protected", protect, (req, res) => {
-  res.send("successfully in");
-});
+//paypal stuff
+app.get("/api/config/paypal", (req, res) => res.send(process.env.PAYPAL_CLIENT_ID));
 
 app.use(NotFound);
 app.use(ErrorMiddleware);

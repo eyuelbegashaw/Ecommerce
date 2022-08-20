@@ -9,16 +9,16 @@ import Alert from "../components/Globals/Alert";
 import Form from "../components/Globals/Form";
 
 const Login = () => {
-  //initializations
+  //Declarations
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  //component states
+  //Component states
   const [alert, setAlert] = useState({type: "", text: ""});
   const [formData, setFormData] = useState({email: "", password: ""});
 
-  //global states
+  //Global states
   const {user, isError, isSuccess, message} = useSelector(store => store.auth);
 
   const redirect = location.search ? location.search.split("=")[1] : "/";

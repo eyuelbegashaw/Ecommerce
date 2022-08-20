@@ -2,7 +2,7 @@ const CartItem = ({item, handleDelete, handleQuantity}) => {
   return (
     <tr>
       <td>
-        <img src={item.image} alt={item.name} style={{width: 85, height: 70}} />
+        <img className="img-fluid" src={item.image} alt={item.name} style={{width: 85}} />
       </td>
       <td>{item.name}</td>
       <td>{item.price} ብር</td>

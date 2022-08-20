@@ -9,6 +9,6 @@ const Alert = ({type, text, setAlert}) => {
     }
   }, [type, type, setAlert]);
 
-  return <div className={`container alert alert-${type}`}>{text} </div>;
+  return <div className={`alert alert-${type} p-1`}>{text} </div>;
 };
 export default Alert;

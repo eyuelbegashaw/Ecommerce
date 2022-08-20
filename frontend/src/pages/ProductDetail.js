@@ -1,22 +1,25 @@
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
+
+//Redux
 import {useSelector, useDispatch} from "react-redux";
 import {getProduct, reset, resetProduct} from "../features/products/productSlice";
 
-//components
+//Components
 import Rating from "../components/Globals/Ratings";
 import Spinner from "../components/Globals/Spinner";
 import Alert from "../components/Globals/Alert";
 
 const ProductDetail = () => {
-  //initializations
+  //Declarations
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  //component state
+  //Component state
   const [quantity, setQuantity] = useState(1);
-  const [error, setError] = useState(false);
-  //global state
+  const [alert, setAlert] = useState({type: "", text: ""});
+
+  //Global state
   const {productId} = useParams();
   const {product, isLoading, isSuccess, isError, message} = useSelector(store => store.product);
 
@@ -25,9 +28,10 @@ const ProductDetail = () => {
   }, [dispatch, productId]);
 
   useEffect(() => {
-    if (isError) setError(true);
-    if (isError || isSuccess) dispatch(reset());
-  }, [isError, isSuccess, dispatch]);
+    if (isError) setAlert({type: "danger", text: message});
+
+    dispatch(reset());
+  }, [isError, isSuccess, message, dispatch]);
 
   useEffect(() => {
     return () => {
@@ -36,12 +40,12 @@ const ProductDetail = () => {
   }, [dispatch]);
 
   const addToCartHandler = () => {
-    navigate(`/cart/${product._id}?qty=${quantity}`);
+    navigate(`/cart/${product._id}?quantity=${quantity}`);
   };
 
   return (
     <>
-      <div>{error && <Alert type={"danger"} text={message} />}</div>
+      <div>{<Alert type={alert.type} text={alert.text} setAlert={setAlert} />}</div>
       {Object.keys(product).length !== 0 && (
         <div className="container m-auto row mt-2">
           <div className="col-lg-6">

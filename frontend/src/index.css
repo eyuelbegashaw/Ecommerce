@@ -13,3 +13,16 @@ main {
   height: min-content;
   width: 300px;
 }
+
+.disabledLink {
+  pointer-events: none;
+}
+
+.black {
+  color: black;
+}
+
+.inline {
+  display: inline-block;
+  margin-left: auto;
+}
