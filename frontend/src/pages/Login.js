@@ -22,6 +22,7 @@ const Login = () => {
   const {user, isError, isSuccess, message} = useSelector(store => store.auth);
 
   const redirect = location.search ? location.search.split("=")[1] : "/";
+  console.log(location.search);
 
   const onSubmit = e => {
     e.preventDefault();
@@ -55,7 +56,7 @@ const Login = () => {
       <Form formData={formData} onChange={onChange} onSubmit={onSubmit} type={"Login"} />
       <div>
         New customer ?
-        <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>Register</Link>
+        <Link to={redirect ? `/register/?redirect=${redirect}` : "/register"}>Register</Link>
       </div>
     </div>
   );

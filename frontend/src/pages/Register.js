@@ -10,7 +10,7 @@ function Register() {
   //initializations
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation;
+  const location = useLocation();
 
   //components states
   const [formData, setFormData] = useState({
@@ -25,7 +25,7 @@ function Register() {
   //global states
   const {isSuccess, isError, message} = useSelector(store => store.auth);
 
-  const redirect = location.search ? location.search.split("=")[1] : "/";
+  const redirect = location.search ? "/" + location.search.split("=")[1] : "/";
 
   useEffect(() => {
     if (isError) {

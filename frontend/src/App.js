@@ -18,6 +18,8 @@ import Payment from "./pages/Payment";
 import PlaceOrder from "./pages/PlaceOrder";
 import OrderDetail from "./pages/OrderDetail";
 
+import UsersScreen from "./pages/UsersScreen";
+
 function App() {
   return (
     <Router>
@@ -37,6 +39,8 @@ function App() {
           <Route path="/payment" element={<Payment />} />
           <Route path="/order" element={<PlaceOrder />} />
           <Route path="/order/:orderId" element={<OrderDetail />} />
+
+          <Route path="/admin/users" element={<UsersScreen />} />
         </Route>
       </Routes>
     </Router>

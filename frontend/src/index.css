@@ -26,3 +26,7 @@ main {
   display: inline-block;
   margin-left: auto;
 }
+
+.minHeight {
+  height: min-content;
+}

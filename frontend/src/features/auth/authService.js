@@ -1,5 +1,17 @@
 import axios from "axios";
 
+//GET - return all users for admin
+const getAllUsers = async token => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const {data} = await axios.get("/api/user", config);
+  return data;
+};
+
 //POST - login
 const login = async userData => {
   const {data} = await axios.post("/api/user/login", userData);
@@ -42,6 +54,7 @@ const authService = {
   register,
   updateUser,
   logout,
+  getAllUsers,
 };
 
 export default authService;

@@ -1,12 +1,13 @@
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useParams, useNavigate} from "react-router-dom";
 
 //Redux
 import {useSelector, useDispatch} from "react-redux";
-import {getOrder, orderReset} from "../features/order/orderSlice";
+import {getOrder, orderReset, orderPay} from "../features/order/orderSlice";
 
 //Components
 import Alert from "../components/Globals/Alert";
+import PayPal from "../components/OrderDetail/PayPal";
 
 const OrderDetail = () => {
   //Declarations
@@ -18,6 +19,9 @@ const OrderDetail = () => {
   const {order, isError, message} = useSelector(store => store.order);
   const {user} = useSelector(store => store.auth);
 
+  //Component States (PayPal)
+  const [paymentError, setPaymentError] = useState({value: false, message: ""});
+
   //reset on unmount
   useEffect(() => {
     return () => {
@@ -25,27 +29,33 @@ const OrderDetail = () => {
     };
   }, [dispatch]);
 
+  //Fetch order detail
   useEffect(() => {
     if (!user) navigate("/login");
+    if (Object.keys(order).length === 0) dispatch(getOrder(orderId));
+  }, [dispatch, navigate, user, order, orderId]);
 
-    dispatch(getOrder(orderId));
-  }, [dispatch, navigate, user, orderId]);
+  const handlePayment = paymentResult => {
+    dispatch(orderPay({orderId, paymentResult}));
+  };
 
   //calculate items price
   const getItemsPrice = () => {
     let num = order.orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    let res = (Math.round(num * 100) / 100).toFixed(2);
-    return res;
+    let response = (Math.round(num * 100) / 100).toFixed(2);
+    return response;
   };
 
   return (
     <>
       {Object.keys(order).length !== 0 && (
         <>
+          {paymentError.value && <div>{<Alert type={"danger"} text={paymentError.message} />}</div>}
           {isError && <Alert type={"danger"} text={message} />}
+
           <h4 className="container-md text-center mx-3 mt-1">ORDER {order._id}</h4>
           <div className="container-md mx-auto row p-2">
-            <div className="col-md-8 p-0 m-0">
+            <div className="col-md-7 p-0 me-2">
               <div className="mt-1">
                 <h4>SHIPPING</h4>
                 <p>
@@ -61,6 +71,7 @@ const OrderDetail = () => {
                 ) : (
                   <Alert type="danger" text={`Not Delivered`} />
                 )}
+
                 <hr />
               </div>
 
@@ -68,6 +79,7 @@ const OrderDetail = () => {
                 <h4>PAYMENT METHOD</h4>
                 <strong>Method: </strong>
                 {order.paymentMethod}
+
                 {order.isPaid ? (
                   <Alert type="success" text={`Paid on ${order.paidAt}`} />
                 ) : (
@@ -94,7 +106,7 @@ const OrderDetail = () => {
               <hr />
             </div>
 
-            <div className="col-md-4 border mt-4">
+            <div className="col-md-4 border mt-4 minHeight pb-3">
               <h4>ORDER SUMMARY</h4>
               <div className="d-flex justify-content-between">
                 <div>Items</div>
@@ -112,6 +124,13 @@ const OrderDetail = () => {
                 <div>Total</div>
                 <div>{order.totalPrice} ብር</div>
               </div>
+              {!order.isPaid && (
+                <PayPal
+                  price={order.totalPrice}
+                  setPaymentError={setPaymentError}
+                  handlePayment={handlePayment}
+                />
+              )}
             </div>
           </div>
         </>

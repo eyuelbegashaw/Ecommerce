@@ -5,6 +5,7 @@ import {Outlet, Link} from "react-router-dom";
 import Footer from "../Footer";
 import SignIn from "./SignIn";
 import SignOut from "./SignOut";
+import Admin from "./Admin";
 
 const Header = () => {
   const {user} = useSelector(store => store.auth);
@@ -35,7 +36,9 @@ const Header = () => {
                     <i className="fas fa-shopping-cart"></i> Cart
                   </Link>
                 </li>
+
                 {user ? <SignOut /> : <SignIn />}
+                {user && user.isAdmin && <Admin />}
               </ul>
             </div>
           </div>

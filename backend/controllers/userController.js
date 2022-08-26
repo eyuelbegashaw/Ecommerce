@@ -71,6 +71,15 @@ const registerUser = async (req, res, next) => {
   }
 };
 
+const getUsers = async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.json(users);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getUser = async (req, res, next) => {
   try {
     if (req.user) {
@@ -91,7 +100,10 @@ const updateUser = async (req, res, next) => {
       user.name = req.body.name || user.name;
       user.email = req.body.email || user.email;
       if (req.body.password) {
-        user.password = req.body.password;
+        // Hash password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+        user.password = hashedPassword;
       }
 
       const updatedUser = await user.save();
@@ -112,4 +124,4 @@ const updateUser = async (req, res, next) => {
   }
 };
 
-export {loginUser, registerUser, getUser, updateUser};
+export {loginUser, registerUser, getUser, getUsers, updateUser};

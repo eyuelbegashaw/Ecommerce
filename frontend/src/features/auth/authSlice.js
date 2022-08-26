@@ -6,6 +6,7 @@ import {errorMessage} from "../../util/error";
 const user = JSON.parse(localStorage.getItem("user"));
 
 const initialState = {
+  users: [],
   user: user ? user : null,
   isLoading: false,
   isSuccess: false,
@@ -41,9 +42,11 @@ export const updateUser = createAsyncThunk("auth/updateUser", async (data, thunk
   }
 });
 
-//get user
-export const getUser = createAsyncThunk("auth/getUser", async (data, thunkAPI) => {
+//get all users
+export const getAllUsers = createAsyncThunk("auth/getAllUsers", async (_, thunkAPI) => {
   try {
+    const token = thunkAPI.getState().auth.user.token;
+    return await authService.getAllUsers(token);
   } catch (error) {
     return thunkAPI.rejectWithValue(errorMessage(error));
   }
@@ -107,6 +110,20 @@ export const authSlice = createSlice({
       })
       .addCase(updateUser.rejected, (state, action) => {
         state.user = null;
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(getAllUsers.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(getAllUsers.fulfilled, (state, action) => {
+        state.users = action.payload;
+        state.isLoading = false;
+        state.isSuccess = true;
+      })
+      .addCase(getAllUsers.rejected, (state, action) => {
+        state.users = [];
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

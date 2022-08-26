@@ -63,7 +63,7 @@ const PlaceOrder = () => {
         <CheckoutNav step={4} />
       </div>
       <div className="container-md mx-auto row p-2">
-        <div className="col-md-8 p-0 m-0">
+        <div className="col-md-7 p-0 m-0 me-2">
           <div>
             <h3>SHIPPING</h3>
             <p>
@@ -98,7 +98,7 @@ const PlaceOrder = () => {
           </div>
         </div>
 
-        <div className="col-md-4 border">
+        <div className="col-md-4 border minHeight pb-2">
           <h3>ORDER SUMMARY</h3>
           <div className="d-flex justify-content-between">
             <div>Items</div>
