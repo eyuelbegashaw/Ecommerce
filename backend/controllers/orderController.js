@@ -103,7 +103,7 @@ const updateOrderToDelivered = async (req, res, next) => {
 
 const getMyOrders = async (req, res, next) => {
   try {
-    const orders = await Order.find({user: req.user._id});
+    const orders = await Order.find({user: req.user.id});
     res.json(orders);
   } catch (error) {
     next(error);

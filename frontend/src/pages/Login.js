@@ -21,8 +21,7 @@ const Login = () => {
   //Global states
   const {user, isError, isSuccess, message} = useSelector(store => store.auth);
 
-  const redirect = location.search ? location.search.split("=")[1] : "/";
-  console.log(location.search);
+  const redirect = location.search ? "/" + location.search.split("=")[1] : "/";
 
   const onSubmit = e => {
     e.preventDefault();

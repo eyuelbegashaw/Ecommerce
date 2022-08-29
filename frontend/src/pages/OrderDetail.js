@@ -32,8 +32,11 @@ const OrderDetail = () => {
   //Fetch order detail
   useEffect(() => {
     if (!user) navigate("/login");
-    if (Object.keys(order).length === 0) dispatch(getOrder(orderId));
-  }, [dispatch, navigate, user, order, orderId]);
+  }, [dispatch, navigate, user]);
+
+  useEffect(() => {
+    dispatch(getOrder(orderId));
+  }, [dispatch, orderId]);
 
   const handlePayment = paymentResult => {
     dispatch(orderPay({orderId, paymentResult}));

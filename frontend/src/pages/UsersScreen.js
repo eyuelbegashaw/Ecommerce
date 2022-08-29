@@ -17,7 +17,7 @@ const UsersScreen = () => {
   useEffect(() => {
     if (!user || !user.isAdmin) navigate("/login");
     dispatch(getAllUsers());
-  }, [dispatch]);
+  }, [dispatch, user]);
 
   const handleDelete = userId => {
     console.log("Delete working", userId);

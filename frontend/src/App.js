@@ -18,6 +18,8 @@ import Payment from "./pages/Payment";
 import PlaceOrder from "./pages/PlaceOrder";
 import OrderDetail from "./pages/OrderDetail";
 
+import MyOrders from "./pages/MyOrders";
+
 import UsersScreen from "./pages/UsersScreen";
 
 function App() {
@@ -30,6 +32,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/myOrders" element={<MyOrders />} />
 
           <Route path="/product/:productId" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />

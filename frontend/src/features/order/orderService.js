@@ -22,6 +22,17 @@ const getOrder = async (orderId, token) => {
   return data;
 };
 
+const getMyOrders = async token => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const {data} = await axios.get(`/api/orders/myorder`, config);
+  return data;
+};
+
 const orderPay = async (newData, token) => {
   const {orderId, paymentResult} = newData;
   const config = {
@@ -37,6 +48,7 @@ const orderService = {
   createOrder,
   getOrder,
   orderPay,
+  getMyOrders,
 };
 
 export default orderService;
