@@ -42,11 +42,31 @@ export const updateUser = createAsyncThunk("auth/updateUser", async (data, thunk
   }
 });
 
+//update user
+export const updateUsers = createAsyncThunk("auth/updateUsers", async (data, thunkAPI) => {
+  try {
+    const token = thunkAPI.getState().auth.user.token;
+    return await authService.updateUsers(data, token);
+  } catch (error) {
+    return thunkAPI.rejectWithValue(errorMessage(error));
+  }
+});
+
 //get all users
 export const getAllUsers = createAsyncThunk("auth/getAllUsers", async (_, thunkAPI) => {
   try {
     const token = thunkAPI.getState().auth.user.token;
     return await authService.getAllUsers(token);
+  } catch (error) {
+    return thunkAPI.rejectWithValue(errorMessage(error));
+  }
+});
+
+//delete user
+export const deleteUser = createAsyncThunk("auth/deleteUser", async (id, thunkAPI) => {
+  try {
+    const token = thunkAPI.getState().auth.user.token;
+    return await authService.deleteUser(id, token);
   } catch (error) {
     return thunkAPI.rejectWithValue(errorMessage(error));
   }
@@ -125,6 +145,37 @@ export const authSlice = createSlice({
       })
       .addCase(getAllUsers.rejected, (state, action) => {
         state.users = [];
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(deleteUser.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(deleteUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.message = "User Removed Successfully";
+      })
+      .addCase(deleteUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(updateUsers.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(updateUsers.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+
+        const updatedUser = state.users.map(user =>
+          user._id === action.payload._id ? action.payload : user
+        );
+
+        state.users = updatedUser;
+      })
+      .addCase(updateUsers.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

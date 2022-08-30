@@ -1,4 +1,4 @@
-const User = ({user, handleDelete}) => {
+const User = ({user, handleDelete, handleEdit}) => {
   return (
     <tr>
       <td>{user._id}</td>
@@ -13,8 +13,14 @@ const User = ({user, handleDelete}) => {
       </td>
 
       <td className="text-center">
-        <button className="border-0" onClick={() => handleDelete(user._id)}>
-          <i className="fa fa-trash" aria-hidden="true"></i>
+        <button className="border-0" onClick={() => handleEdit(user)}>
+          Edit
+        </button>
+      </td>
+
+      <td className="text-center">
+        <button className="border-0" onClick={handleDelete}>
+          <i className="fa fa-trash text-danger" aria-hidden="true"></i>
         </button>
       </td>
     </tr>

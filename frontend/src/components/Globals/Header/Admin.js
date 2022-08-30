@@ -4,7 +4,7 @@ const Admin = () => {
   return (
     <li className="nav-item dropdown ms-3">
       <Link className="nav-link dropdown-toggle" to="#" role="button" data-bs-toggle="dropdown">
-        Admin
+        ADMIN
       </Link>
       <ul className="dropdown-menu">
         <li>

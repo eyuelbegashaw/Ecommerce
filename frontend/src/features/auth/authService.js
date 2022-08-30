@@ -44,6 +44,29 @@ const updateUser = async (updatedUser, token) => {
   return data;
 };
 
+//PUT - update user  - admin
+const updateUsers = async (updatedData, token) => {
+  const {id, updatedUser} = updatedData;
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const {data} = await axios.put(`/api/user/${id}`, updatedUser, config);
+  return data;
+};
+
+//DELETE - delete user
+const deleteUser = async (id, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const {data} = await axios.delete(`/api/user/${id}`, config);
+  return data;
+};
+
 //logout
 const logout = async () => {
   localStorage.removeItem("user");
@@ -55,6 +78,8 @@ const authService = {
   updateUser,
   logout,
   getAllUsers,
+  deleteUser,
+  updateUsers,
 };
 
 export default authService;

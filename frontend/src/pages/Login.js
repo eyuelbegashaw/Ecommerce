@@ -19,7 +19,7 @@ const Login = () => {
   const [formData, setFormData] = useState({email: "", password: ""});
 
   //Global states
-  const {user, isError, isSuccess, message} = useSelector(store => store.auth);
+  const {isError, isSuccess, message} = useSelector(store => store.auth);
 
   const redirect = location.search ? "/" + location.search.split("=")[1] : "/";
 
@@ -44,7 +44,7 @@ const Login = () => {
     }
 
     dispatch(reset());
-  }, [dispatch, isError, message, isSuccess, user, redirect, navigate]);
+  }, [dispatch, isError, message, isSuccess, redirect, navigate]);
 
   return (
     <div className="container col-md-6 col-lg-5 col-xl-4 mx-auto mt-3">
